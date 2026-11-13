@@ -79,7 +79,7 @@ function sprite(id, w, h, state) { const k = `${id}|${w}|${h}|${state}|${pal.id}
 const cv = $('#board'), cx2 = cv.getContext('2d');
 let raf = 0, dirty = true;
 function startGame(mode, level) {
-  Audio.unlock();
+  Audio.unlock(); if (mode === 'level') level = Math.max(1, Math.floor(Number(level)) || 1);
   let board, hints = 3, shuffles = 2, resumed = false; const today = ymd();
   const g = st.game;
   if (g && g.mode === mode && (mode === 'daily' ? g.ymd === today : g.level === level)) { try { board = Board.restore(g.snap); hints = g.hints ?? 3; shuffles = g.shuffles ?? 2; resumed = true; } catch { board = null; } }
@@ -220,10 +220,11 @@ async function shareDaily(g, s) {
 }
 function winSheet(g, coins, s, bonusTheme) {
   const streakLine = s.n === 7 ? t('S8') : s.n > 1 ? t('streakDay', { n: s.n }) : '', extra = [streakLine, s.rested ? t('streakRest') : '', bonusTheme ? `${t('bonusDay7')} (${bonusTheme.theme})` : ''].filter(Boolean).join(' ');
-  const done = async (c) => { st.coins += c; st.pending = 0; save(st, true); closeSheet(); await afterWin(g); };
+  let claimed = false, busy = false;
+  const done = async (c) => { if (claimed) return; claimed = true; st.coins += c; st.pending = 0; save(st, true); closeSheet(); await afterWin(g); };
   if (st.pass) { openSheet({ title: t('win'), body: [extra, `+${coins * 2}`].filter(Boolean).join('  ·  '), buttons: [{ label: t('next'), kind: 'main', fn: () => done(coins * 2) }, ...(g.mode === 'daily' ? [{ label: t('share'), kind: 'quiet', fn: () => shareDaily(g, s) }] : [])], dismiss: false }); winDecor(); return; }
   const btns = [{ label: t('takeCoins', { n: coins }), kind: 'main', fn: () => done(coins) }];
-  if (Ads.rewardedAvailable(st)) btns.push({ label: t('watchCoins', { n: coins * 2 }), sub: t('optional'), fn: async () => { const r = await Ads.rewarded(st); if (r === 'earned') done(coins * 2); else if (r === 'failed-granted') { toast(t('adFail')); done(coins * 2); } else if (r === 'failed') toast(t('adLater')); } });
+  if (Ads.rewardedAvailable(st)) btns.push({ label: t('watchCoins', { n: coins * 2 }), sub: t('optional'), fn: async () => { if (busy || claimed) return; busy = true; try { const r = await Ads.rewarded(st); if (r === 'earned') done(coins * 2); else if (r === 'failed-granted') { toast(t('adFail')); done(coins * 2); } else if (r === 'failed') toast(t('adLater')); } finally { busy = false; } } });
   if (g.mode === 'daily') btns.push({ label: t('share'), kind: 'quiet', fn: () => shareDaily(g, s) });
   openSheet({ title: t('win'), body: [extra, g.mode === 'daily' ? '' : t('S7')].filter(Boolean).join('\n'), buttons: btns, dismiss: false }); winDecor();
   $('#sheet p') && ($('#sheet p').style.whiteSpace = 'pre-line');
@@ -338,6 +339,7 @@ async function boot() {
   applyLook(); renderStatic(); show('home');
   const away = Date.now() - (st.lastSeen || Date.now()); st.lastSeen = Date.now();
   if (st.firstRun) { st.firstRun = false; } else if (away > 24 * 3600e3) setTimeout(() => toast(t('S9'), { ms: 4200 }), 700);
+  if (!Number.isFinite(st.level) || st.level < 1) st.level = 1; st.level = Math.floor(st.level);
   Audio.setVolume(st.set.vol ?? 0.6); Audio.setSfx(st.set.sfx !== false);
   if (st.set.sound !== 'silent') document.addEventListener('pointerdown', () => { Audio.unlock(); Audio.ambient(st.set.sound); }, { once: true });
   save(st); Ads.init(st).then(() => Ads.banner(true, st)).then(renderHome); Billing.init(st, onPass); if (st.set.reminder) setReminder(true);
