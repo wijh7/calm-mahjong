@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#0f1730">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: blob:; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self'">
+<title>Calm Mahjong</title>
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<div id="app">
+  <canvas id="garden" aria-hidden="true"></canvas>
+
+  <section id="home" class="screen" aria-label="Home">
+    <header class="top">
+      <div class="brand" id="brand"></div>
+      <div class="row"><button class="pill coin" id="homeCoins" aria-label="Coins"><i class="ic" data-ic="coin"></i><b>0</b></button>
+      <button class="round" id="btnSettings" data-ic="gear" aria-label="Settings"></button></div>
+    </header>
+    <div class="spacer"></div>
+    <div class="dock">
+      <button class="daily" id="btnDaily"><span class="dtxt"><b id="dailyTitle"></b><small id="dailySub"></small></span><i class="ic" data-ic="sun"></i></button>
+      <button class="cta" id="btnPlay"><span id="playLabel"></span><small id="playSub"></small></button>
+      <nav class="nav">
+        <button data-go="map"><i class="ic" data-ic="map"></i><span id="nMap"></span></button>
+        <button data-go="shop"><i class="ic" data-ic="bag"></i><span id="nShop"></span></button>
+        <button data-go="decor"><i class="ic" data-ic="leaf"></i><span id="nDecor"></span></button>
+      </nav>
+    </div>
+  </section>
+
+  <section id="game" class="screen" hidden aria-label="Game">
+    <header class="top">
+      <button class="round" id="gBack" data-ic="back" aria-label="Back"></button>
+      <div class="gtitle"><b id="gLevel"></b><small id="gLeft"></small></div>
+      <div class="row"><button class="pill coin" id="gCoins" aria-label="Coins"><i class="ic" data-ic="coin"></i><b>0</b></button>
+      <button class="round" id="gMenu" data-ic="gear" aria-label="Settings"></button></div>
+    </header>
+    <div id="boardWrap"><canvas id="board" aria-label="Mahjong board"></canvas><div id="coach" hidden></div></div>
+    <footer class="tools">
+      <button class="tool" id="tUndo"><i class="ic" data-ic="undo"></i><span id="lUndo"></span></button>
+      <button class="tool" id="tHint"><i class="ic" data-ic="bulb"></i><span id="lHint"></span><em id="cHint"></em></button>
+      <button class="tool" id="tShuffle"><i class="ic" data-ic="shuffle"></i><span id="lShuffle"></span></button>
+    </footer>
+  </section>
+
+  <section id="panel" class="screen" hidden aria-label="Panel"></section>
+  <div id="sheetWrap" hidden><div id="sheetBack"></div><div id="sheet" role="dialog" aria-modal="true"></div></div>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <div id="live" class="sr" aria-live="polite"></div>
+  <div id="sim" hidden><div><b>Test ad</b><p>(web preview only)</p><button id="simClose">×</button></div></div>
+</div>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

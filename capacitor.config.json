@@ -1,0 +1,11 @@
+{
+  "appId": "com.calmmahjong.quiet",
+  "appName": "Calm Mahjong",
+  "webDir": "www",
+  "backgroundColor": "#0f1730",
+  "android": { "allowMixedContent": false, "webContentsDebuggingEnabled": false },
+  "plugins": {
+    "SplashScreen": { "launchShowDuration": 0 },
+    "LocalNotifications": { "smallIcon": "ic_stat_calm", "iconColor": "#ffbf66" }
+  }
+}

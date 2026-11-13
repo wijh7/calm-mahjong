@@ -1,0 +1,27 @@
+{
+  "name": "calm-mahjong",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Calm Mahjong - quiet, private, large-tile mahjong solitaire",
+  "type": "module",
+  "scripts": {
+    "i18n": "python3 tools/build-i18n.py",
+    "test:solver": "node tools/solver-test.mjs 1000",
+    "serve": "http-server -p 8123 -c-1 .",
+    "sync": "npx cap sync android",
+    "android:debug": "cd android && ./gradlew assembleDebug",
+    "android:release": "cd android && ./gradlew bundleRelease assembleRelease"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.6.2",
+    "@capacitor/app": "^8.1.2",
+    "@capacitor/core": "^8.6.2",
+    "@capacitor/haptics": "^8.0.2",
+    "@capacitor/local-notifications": "^8.3.1",
+    "@capacitor/preferences": "^8.0.1",
+    "@capacitor-community/admob": "^8.3.0",
+    "@capacitor-community/in-app-review": "latest",
+    "@capgo/native-purchases": "^8.9.13"
+  },
+  "devDependencies": { "@capacitor/cli": "^8.6.2" }
+}

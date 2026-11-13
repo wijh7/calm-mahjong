@@ -1,0 +1,17 @@
+<!doctype html><meta charset=utf-8><body style="margin:0;background:#222;display:flex;gap:16px;padding:16px">
+<script type=module>
+import {renderTile} from '../../www/js/tiles.js'; import {THEMES} from '../../www/js/themes.js';
+const faces=['d1','b3','c5','wE','pR','d8','b5','c1','pG','fl2','d3','b8','c9','pW','se1','d5','b1','c3'];
+for (const [name,label] of [['washi','A · Washi Night'],['porcelain','B · Moss & Porcelain'],['jade','C · Dusk Jade']]) {
+  const T=THEMES[name]; const cv=document.createElement('canvas'); const W=390,H=800,dpr=2; cv.width=W*dpr; cv.height=H*dpr; cv.style.width=W+'px'; cv.style.height=H+'px'; document.body.append(cv);
+  const c=cv.getContext('2d'); c.scale(dpr,dpr);
+  let g=c.createLinearGradient(0,0,0,H); T.sky.forEach((s,i)=>g.addColorStop(i/2,s)); c.fillStyle=g; c.fillRect(0,0,W,H);
+  const rg=c.createRadialGradient(W*.5,H*.2,0,W*.5,H*.2,260); rg.addColorStop(0,T.glow+'66'); rg.addColorStop(1,T.glow+'00'); c.fillStyle=rg; c.fillRect(0,0,W,H);
+  const dark = name!=='porcelain'; c.fillStyle=dark?'#f3ead8':'#1c3a33'; c.font='600 15px sans-serif'; c.fillText(label,20,34);
+  c.font='500 13px sans-serif'; c.globalAlpha=.7; c.fillText('Level 12',20,56); c.globalAlpha=1;
+  const tw=48,th=62; for(let r=0;r<6;r++)for(let q=0;q<7;q++){ const id=faces[(r*7+q)%faces.length]; const dim=(q>0&&q<6&&r>0&&r<5&&(r+q)%3==0); const cvT=renderTile(id,tw*dpr,th*dpr,T,{dim}); c.drawImage(cvT,20+q*(tw+2)*1,90+r*(th+2),tw,th);}
+  const cvS=renderTile('d5',tw*2*dpr,th*2*dpr,T,{}); c.drawImage(cvS,20,520,tw*1.7,th*1.7); c.drawImage(renderTile('c7',tw*2*dpr,th*2*dpr,T,{hint:true}),130,520,tw*1.7,th*1.7); c.drawImage(renderTile('fl3',tw*2*dpr,th*2*dpr,T,{selected:true}),240,520,tw*1.7,th*1.7);
+  c.fillStyle=dark?'rgba(255,255,255,.12)':'rgba(20,60,50,.12)'; c.beginPath(); c.roundRect(20,700,350,64,32); c.fill();
+}
+document.title='ready';
+</script>
