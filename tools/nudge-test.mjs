@@ -1,0 +1,10 @@
+import { chromium } from '/opt/node22/lib/node_modules/playwright/index.mjs';
+const b = await chromium.launch(); const p = await (await b.newContext({ viewport: { width: 360, height: 740 }, deviceScaleFactor: 2 })).newPage(); const errs = []; p.on('pageerror', e => errs.push(e.message));
+await p.goto('http://127.0.0.1:8123/www/index.html?debug=1'); await p.waitForFunction(() => window.__cm);
+await p.evaluate(() => { const c = window.__cm; c.st.level = 47; c.startGame('level', 47); }); await p.waitForTimeout(400); await p.evaluate(() => window.__cm.win()); await p.waitForTimeout(1500);
+const body = await p.evaluate(() => document.querySelector('#sheet p')?.textContent); console.log('goal body:', JSON.stringify(body)); await p.screenshot({ path: '/tmp/goal.png' });
+await p.evaluate(() => { const o = Date.now; Date.now = () => o() + 50 * 60000; });
+await p.evaluate(() => document.querySelector('#sheet .btn.main').click()); await p.waitForTimeout(900);
+const title = await p.evaluate(() => document.querySelector('#sheet h2')?.textContent); console.log('after win title:', title); await p.screenshot({ path: '/tmp/nudge.png' });
+await p.evaluate(() => [...document.querySelectorAll('#sheet .btn')].find(x => x.classList.contains('quiet')).click()); await p.waitForTimeout(700);
+console.log('keep playing -> in game:', await p.evaluate(() => !!window.__cm.game && !window.__cm.game.won), 'level', await p.evaluate(() => window.__cm.game.level)); console.log('errs', JSON.stringify(errs)); await b.close();

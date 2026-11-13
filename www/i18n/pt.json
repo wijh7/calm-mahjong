@@ -105,5 +105,11 @@
 "copied": "Copiado",
 "soundPiano": "Piano suave",
 "volume": "Volume",
-"sfxLabel": "Efeitos sonoros"
+"sfxLabel": "Efeitos sonoros",
+"goalLevels": "Mais {n} níveis até {name}.",
+"breakTitle": "Seu jardim cresceu.",
+"breakBody": "Você jogou por um tempo. Uma pausa faz bem.",
+"breakRest": "Fazer uma pausa",
+"breakKeep": "Continuar",
+"breakSetting": "Lembrete de pausa suave"
 }

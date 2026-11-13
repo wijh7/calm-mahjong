@@ -105,5 +105,11 @@
 "copied": "Copied",
 "soundPiano": "Soft piano",
 "volume": "Volume",
-"sfxLabel": "Sound effects"
+"sfxLabel": "Sound effects",
+"goalLevels": "{n} more levels to {name}.",
+"breakTitle": "Your garden has grown.",
+"breakBody": "You have been playing a while. A small break feels nice.",
+"breakRest": "Take a break",
+"breakKeep": "Keep playing",
+"breakSetting": "Gentle break reminder"
 }

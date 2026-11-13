@@ -105,5 +105,11 @@
 "copied": "Kopiert",
 "soundPiano": "Sanftes Klavier",
 "volume": "Lautstärke",
-"sfxLabel": "Soundeffekte"
+"sfxLabel": "Soundeffekte",
+"goalLevels": "Noch {n} Level bis {name}.",
+"breakTitle": "Dein Garten ist gewachsen.",
+"breakBody": "Du spielst schon eine Weile. Eine kleine Pause tut gut.",
+"breakRest": "Pause machen",
+"breakKeep": "Weiterspielen",
+"breakSetting": "Sanfte Pausenerinnerung"
 }

@@ -105,5 +105,11 @@
 "copied": "Copié",
 "soundPiano": "Piano doux",
 "volume": "Volume",
-"sfxLabel": "Effets sonores"
+"sfxLabel": "Effets sonores",
+"goalLevels": "Encore {n} niveaux avant {name}.",
+"breakTitle": "Ton jardin a poussé.",
+"breakBody": "Tu joues depuis un moment. Une petite pause fait du bien.",
+"breakRest": "Faire une pause",
+"breakKeep": "Continuer",
+"breakSetting": "Rappel de pause doux"
 }

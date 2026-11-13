@@ -105,5 +105,11 @@
 "copied": "Copiado",
 "soundPiano": "Piano suave",
 "volume": "Volumen",
-"sfxLabel": "Efectos de sonido"
+"sfxLabel": "Efectos de sonido",
+"goalLevels": "{n} niveles más hasta {name}.",
+"breakTitle": "Tu jardín ha crecido.",
+"breakBody": "Llevas un rato jugando. Un pequeño descanso sienta bien.",
+"breakRest": "Descansar",
+"breakKeep": "Seguir jugando",
+"breakSetting": "Recordatorio de descanso suave"
 }

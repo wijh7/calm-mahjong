@@ -105,5 +105,11 @@
 "copied": "Kopyalandı",
 "soundPiano": "Yumuşak piyano",
 "volume": "Ses düzeyi",
-"sfxLabel": "Ses efektleri"
+"sfxLabel": "Ses efektleri",
+"goalLevels": "{name} için {n} seviye kaldı.",
+"breakTitle": "Bahçen büyüdü.",
+"breakBody": "Bir süredir oynuyorsun. Küçük bir mola iyi gelir.",
+"breakRest": "Mola ver",
+"breakKeep": "Devam et",
+"breakSetting": "Nazik mola hatırlatıcısı"
 }

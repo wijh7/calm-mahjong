@@ -105,5 +105,11 @@
 "copied": "コピーしました",
 "soundPiano": "やさしいピアノ",
 "volume": "音量",
-"sfxLabel": "効果音"
+"sfxLabel": "効果音",
+"goalLevels": "{name}まであと{n}レベル。",
+"breakTitle": "庭が育ちました。",
+"breakBody": "しばらく遊びました。少し休憩しませんか。",
+"breakRest": "休憩する",
+"breakKeep": "続ける",
+"breakSetting": "やさしい休憩リマインダー"
 }

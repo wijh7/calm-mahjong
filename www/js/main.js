@@ -219,7 +219,8 @@ async function shareDaily(g, s) {
   try { await navigator.clipboard.writeText(text); toast(t('copied')); } catch { toast(text); }
 }
 function winSheet(g, coins, s, bonusTheme) {
-  const streakLine = s.n === 7 ? t('S8') : s.n > 1 ? t('streakDay', { n: s.n }) : '', extra = [streakLine, s.rested ? t('streakRest') : '', bonusTheme ? `${t('bonusDay7')} (${bonusTheme.theme})` : ''].filter(Boolean).join(' ');
+  const goal = (() => { if (g.mode !== 'level') return ''; const idx = REGIONS.findIndex(r => !st.themes.includes(r.id) && st.level < REGIONS.indexOf(r) * 50 + 1); if (idx < 0) return ''; const left = idx * 50 + 1 - st.level; return left > 0 && left <= 12 ? t('goalLevels', { n: left, name: REGIONS[idx].theme }) : ''; })();
+  const streakLine = s.n === 7 ? t('S8') : s.n > 1 ? t('streakDay', { n: s.n }) : '', extra = [goal, streakLine, s.rested ? t('streakRest') : '', bonusTheme ? `${t('bonusDay7')} (${bonusTheme.theme})` : ''].filter(Boolean).join(' ');
   let claimed = false, busy = false;
   const done = async (c) => { if (claimed) return; claimed = true; st.coins += c; st.pending = 0; save(st, true); closeSheet(); await afterWin(g); };
   if (st.pass) { openSheet({ title: t('win'), body: [extra, `+${coins * 2}`].filter(Boolean).join('  ·  '), buttons: [{ label: t('next'), kind: 'main', fn: () => done(coins * 2) }, ...(g.mode === 'daily' ? [{ label: t('share'), kind: 'quiet', fn: () => shareDaily(g, s) }] : [])], dismiss: false }); winDecor(); return; }
@@ -229,7 +230,11 @@ function winSheet(g, coins, s, bonusTheme) {
   openSheet({ title: t('win'), body: [extra, g.mode === 'daily' ? '' : t('S7')].filter(Boolean).join('\n'), buttons: btns, dismiss: false }); winDecor();
   $('#sheet p') && ($('#sheet p').style.whiteSpace = 'pre-line');
 }
+let sessionStart = Date.now(), hiddenAt = 0, nudged = false;
+document.addEventListener('visibilitychange', () => { if (document.hidden) hiddenAt = Date.now(); else if (hiddenAt && Date.now() - hiddenAt > 5 * 60000) { sessionStart = Date.now(); nudged = false; } });
+function breakDue() { return st.set.breakNudge !== false && !nudged && Date.now() - sessionStart > 45 * 60000; }
 async function afterWin(g) {
+  if (breakDue()) { nudged = true; return openSheet({ title: t('breakTitle'), body: t('breakBody'), buttons: [{ label: t('breakRest'), kind: 'main', fn: () => { closeSheet(); goHome(); } }, { label: t('breakKeep'), kind: 'quiet', fn: () => { closeSheet(); g.mode === 'daily' ? goHome() : next(); } }], dismiss: false }); }
   if (g.mode === 'daily') return goHome();
   const done = st.stats.done;
   if (done === 15 && !st.rated) { st.rated = 1; return openSheet({ title: t('S12'), buttons: [{ label: t('rateYes'), kind: 'main', fn: async () => { closeSheet(); try { await CAP.InAppReview?.requestReview(); } catch {} next(); } }, { label: t('rateNo'), kind: 'quiet', fn: () => { closeSheet(); next(); } }] }); }
@@ -305,7 +310,7 @@ function openSettings() {
   sec(t('secLook')); chips([['auto', t('lookAuto')], ['day', t('lookDay')], ['evening', t('lookNormal')], ['night', t('lookNight')]], st.set.look, v => { st.set.look = v; save(st); applyLook(); if (game) requestDraw(); });
   tog(t('lookContrast'), 'contrast', () => true);
   sec(t('textSize')); chips([[0, 'A'], [1, 'A+'], [2, 'A++']], st.set.text, v => { st.set.text = v; save(st); applyLook(); layout(); });
-  sec(t('secPlay')); tog(t('showFree'), 'showFree', () => true); tog(t('haptics'), 'haptics', () => true); tog(t('gentleMotion'), 'motion', () => true); tog(t('reminder'), 'reminder', v => setReminder(v, true));
+  sec(t('secPlay')); tog(t('showFree'), 'showFree', () => true); tog(t('haptics'), 'haptics', () => true); tog(t('gentleMotion'), 'motion', () => true); tog(t('reminder'), 'reminder', v => setReminder(v, true)); tog(t('breakSetting'), 'breakNudge', () => true);
   sec(t('language')); const sel = mk('select'); LANGS.forEach(([c, n]) => { const o = mk('option'); o.value = c; o.textContent = n; o.selected = c === st.set.lang; sel.append(o); }); sel.onchange = async () => { st.set.lang = sel.value; await setLang(sel.value); save(st); renderStatic(); if (game) updateHUD(); closeSheet(); openSettings(); }; btns.before(sel);
   sec(t('secPrivacy')); const pn = mk('p', 'note'); pn.textContent = t('privacyNote'); btns.before(pn);
   if (Ads.canRequest && CAP.AdMob) { const b = mk('button', 'btn'); b.textContent = t('adChoices'); b.onclick = () => Ads.privacyOptions(); btns.before(b); }

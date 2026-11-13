@@ -105,5 +105,11 @@
 "copied": "Nakopya",
 "soundPiano": "Malambing na piano",
 "volume": "Lakas ng tunog",
-"sfxLabel": "Sound effects"
+"sfxLabel": "Sound effects",
+"goalLevels": "{n} level pa bago ang {name}.",
+"breakTitle": "Lumago na ang hardin mo.",
+"breakBody": "Matagal ka nang naglalaro. Masarap ang maikling pahinga.",
+"breakRest": "Magpahinga",
+"breakKeep": "Magpatuloy",
+"breakSetting": "Banayad na paalala ng pahinga"
 }
