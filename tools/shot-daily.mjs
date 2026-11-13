@@ -1,0 +1,5 @@
+import { chromium } from '/opt/node22/lib/node_modules/playwright/index.mjs';
+const lang = process.argv[2] || 'en'; const b = await chromium.launch(); const ctx = await b.newContext({ viewport: { width: 320, height: 640 }, deviceScaleFactor: 2, permissions: ['clipboard-read', 'clipboard-write'] }); const p = await ctx.newPage(); const errs = []; p.on('pageerror', e => errs.push(e.message));
+await p.goto('http://127.0.0.1:8123/www/index.html?debug=1'); await p.waitForFunction(() => window.__cm); await p.evaluate(async l => { if (l !== 'en') await window.__cm.setLang(l); }, lang);
+await p.evaluate(() => window.__cm.startGame('daily')); await p.waitForTimeout(500); await p.evaluate(() => window.__cm.win()); await p.waitForTimeout(1500); await p.screenshot({ path: `/tmp/daily-${lang}.png` });
+await p.getByRole('button', { name: /Share|Bagikan|Teilen|シェア|แชร์/ }).click(); await p.waitForTimeout(400); const clip = await p.evaluate(() => navigator.clipboard.readText().catch(e => 'ERR ' + e.message)); console.log(lang, JSON.stringify(clip), JSON.stringify(errs)); await b.close();

@@ -99,5 +99,8 @@
 "useTheme": "Usar tema",
 "themeAuto": "Seguir mi viaje",
 "watchAd": "Ver anuncio",
-"dailyReward": "+100 monedas al terminar"
+"dailyReward": "+100 monedas al terminar",
+"share": "Compartir",
+"shareText": "Calm Mahjong · Diario {d} ✓ · racha de {n} días. Sin anuncios forzados.",
+"copied": "Copiado"
 }

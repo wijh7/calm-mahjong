@@ -13,15 +13,18 @@
     "android:release": "cd android && ./gradlew bundleRelease assembleRelease"
   },
   "dependencies": {
+    "@capacitor-community/admob": "^8.3.0",
+    "@capacitor-community/in-app-review": "latest",
     "@capacitor/android": "^8.6.2",
     "@capacitor/app": "^8.1.2",
     "@capacitor/core": "^8.6.2",
     "@capacitor/haptics": "^8.0.2",
     "@capacitor/local-notifications": "^8.3.1",
     "@capacitor/preferences": "^8.0.1",
-    "@capacitor-community/admob": "^8.3.0",
-    "@capacitor-community/in-app-review": "latest",
+    "@capacitor/share": "^8.0.3",
     "@capgo/native-purchases": "^8.9.13"
   },
-  "devDependencies": { "@capacitor/cli": "^8.6.2" }
+  "devDependencies": {
+    "@capacitor/cli": "^8.6.2"
+  }
 }

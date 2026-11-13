@@ -99,5 +99,8 @@
 "useTheme": "Use theme",
 "themeAuto": "Follow my journey",
 "watchAd": "Watch an ad",
-"dailyReward": "+100 coins for finishing"
+"dailyReward": "+100 coins for finishing",
+"share": "Share",
+"shareText": "Calm Mahjong · Daily {d} ✓ · {n}-day streak. No forced ads.",
+"copied": "Copied"
 }
