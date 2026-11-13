@@ -105,3 +105,5 @@ select option{color:#000}
   #game .tools{grid-column:2;grid-row:2;flex-direction:column;justify-content:center;gap:10px;padding:0 6px}
   #game .tools .tool,#game .tools button{min-width:84px}
 }
+
+.volrow{margin:6px 0 10px}.volrow label{display:flex;align-items:center;gap:12px;font-size:.95rem;opacity:.9}.volrow input{flex:1;min-height:44px;accent-color:#ffbf66}

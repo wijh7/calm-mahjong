@@ -102,5 +102,8 @@
 "dailyReward": "+100 pièces en terminant",
 "share": "Partager",
 "shareText": "Calm Mahjong · Quotidien {d} ✓ · série de {n} jours. Pas de pubs forcées.",
-"copied": "Copié"
+"copied": "Copié",
+"soundPiano": "Piano doux",
+"volume": "Volume",
+"sfxLabel": "Effets sonores"
 }

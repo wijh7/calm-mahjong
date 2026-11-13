@@ -45,6 +45,14 @@ export const Audio = {
     } else if (name === 'purr') {
       const n = noise(c, 3, false), lp = c.createBiquadFilter(), gg = c.createGain(), lfo = c.createOscillator(), lg = c.createGain(); lp.type = 'lowpass'; lp.frequency.value = 220; gg.gain.value = 0.0; lfo.frequency.value = 24; lg.gain.value = 0.25; lfo.connect(lg); lg.connect(gg.gain); const base = c.createConstantSource(); base.offset.value = 0.28; base.connect(gg.gain); base.start();
       n.connect(lp); lp.connect(gg); gg.connect(g); n.start(); lfo.start(); nodes.push(n, lfo, base);
+    } else if (name === 'piano') {
+      // generative soft piano: slow pentatonic phrases through a warm echo. No audio files, never the same twice.
+      const bus = c.createGain(), dl = c.createDelay(1), fb = c.createGain(), wet = c.createGain(), lp = c.createBiquadFilter(); bus.gain.value = 1; dl.delayTime.value = 0.42; fb.gain.value = 0.38; wet.gain.value = 0.5; lp.type = 'lowpass'; lp.frequency.value = 1800;
+      bus.connect(g); bus.connect(dl); dl.connect(lp); lp.connect(fb); fb.connect(dl); lp.connect(wet); wet.connect(g); nodes.push(dl);
+      const scale = [57, 60, 62, 64, 67, 69, 72, 74, 76]; let pos = 4;
+      const note = (m, t, v) => { const f = hz(m), o = c.createOscillator(), o2 = c.createOscillator(), og = c.createGain(); o.type = 'sine'; o2.type = 'triangle'; o.frequency.value = f; o2.frequency.value = f * 2.003; const g2 = c.createGain(); g2.gain.value = 0.18; og.gain.setValueAtTime(0.0001, t); og.gain.exponentialRampToValueAtTime(v, t + 0.03); og.gain.exponentialRampToValueAtTime(0.0001, t + 3.2); o.connect(og); o2.connect(g2); g2.connect(og); og.connect(bus); o.start(t); o2.start(t); o.stop(t + 3.4); o2.stop(t + 3.4); };
+      const step = () => { if (document.hidden) return; if (Math.random() < 0.22) return; const t = c.currentTime + 0.05; pos = Math.max(0, Math.min(scale.length - 1, pos + [-2, -1, -1, 0, 1, 1, 2][Math.floor(Math.random() * 7)])); note(scale[pos], t, 0.07); if (Math.random() < 0.3) note(scale[Math.max(0, pos - 2)] - 12, t + 0.02, 0.05); };
+      step(); timers.push(setInterval(step, 2300));
     } else if (name === 'lofi') {
       const chords = [[57, 60, 64, 67], [53, 57, 60, 64], [55, 59, 62, 65], [52, 55, 59, 62]]; let i = 0;
       const play = () => { if (document.hidden) return; const t = c.currentTime + 0.05, ch = chords[i++ % 4]; ch.forEach((m, k) => { const o = c.createOscillator(), o2 = c.createOscillator(), og = c.createGain(), lp = c.createBiquadFilter(); o.type = 'sine'; o2.type = 'triangle'; o.frequency.value = hz(m); o2.frequency.value = hz(m) * 1.003; lp.type = 'lowpass'; lp.frequency.value = 1100; og.gain.setValueAtTime(0.0001, t + k * 0.04); og.gain.linearRampToValueAtTime(0.05, t + 0.5 + k * 0.04); og.gain.linearRampToValueAtTime(0.0001, t + 3.6); o.connect(lp); o2.connect(lp); lp.connect(og); og.connect(g); o.start(t); o2.start(t); o.stop(t + 3.8); o2.stop(t + 3.8); }); };

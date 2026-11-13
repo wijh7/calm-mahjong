@@ -298,7 +298,9 @@ function openSettings() {
   const sec = x => { const e = mk('div', 'sec'); e.textContent = x; btns.before(e); };
   const chips = (opts, cur, set) => { const w = mk('div', 'chips'); opts.forEach(([v, label, locked]) => { const b = mk('button', 'chip'); b.textContent = locked ? label + ' ✦' : label; if (locked) b.classList.add('lock'); b.setAttribute('aria-pressed', String(v === cur)); b.onclick = () => { if (locked) { closeSheet(); openPanel('shop'); return; } set(v); [...w.children].forEach(c => c.setAttribute('aria-pressed', String(c === b))); }; w.append(b); }); btns.before(w); };
   const tog = (label, key, cb) => { const b = mk('button', 'tog'); b.setAttribute('role', 'switch'); b.setAttribute('aria-checked', String(!!st.set[key])); b.innerHTML = '<span></span><i class="sw"></i>'; b.firstChild.textContent = label; b.onclick = async () => { const v = !st.set[key]; if (cb) { const ok = await cb(v); if (ok === false) return; } st.set[key] = v; b.setAttribute('aria-checked', String(v)); save(st); applyLook(); }; btns.before(b); };
-  sec(t('secSound')); chips([['silent', t('soundSilent')], ['rain', t('soundRain')], ['forest', t('soundForest'), !st.pass], ['purr', t('soundPurr'), !st.pass], ['lofi', t('soundLofi'), !st.pass]], st.set.sound, v => { st.set.sound = v; Audio.unlock(); Audio.ambient(v); save(st); });
+  sec(t('secSound')); chips([['silent', t('soundSilent')], ['piano', t('soundPiano')], ['rain', t('soundRain')], ['forest', t('soundForest'), !st.pass], ['purr', t('soundPurr'), !st.pass], ['lofi', t('soundLofi'), !st.pass]], st.set.sound, v => { st.set.sound = v; Audio.unlock(); Audio.ambient(v); save(st); });
+  { const row = mk('div', 'volrow'); const lab = mk('label'); lab.textContent = t('volume'); const r = mk('input'); r.type = 'range'; r.min = 0; r.max = 100; r.value = Math.round((st.set.vol ?? 0.6) * 100); r.setAttribute('aria-label', t('volume')); lab.append(r); row.append(lab); r.oninput = () => { st.set.vol = r.value / 100; Audio.setVolume(st.set.vol); }; r.onchange = () => { save(st); Audio.unlock(); Audio.match(0); }; btns.before(row); }
+  tog(t('sfxLabel'), 'sfx', v => { Audio.setSfx(v); return true; });
   sec(t('secLook')); chips([['auto', t('lookAuto')], ['day', t('lookDay')], ['evening', t('lookNormal')], ['night', t('lookNight')]], st.set.look, v => { st.set.look = v; save(st); applyLook(); if (game) requestDraw(); });
   tog(t('lookContrast'), 'contrast', () => true);
   sec(t('textSize')); chips([[0, 'A'], [1, 'A+'], [2, 'A++']], st.set.text, v => { st.set.text = v; save(st); applyLook(); layout(); });
@@ -336,6 +338,7 @@ async function boot() {
   applyLook(); renderStatic(); show('home');
   const away = Date.now() - (st.lastSeen || Date.now()); st.lastSeen = Date.now();
   if (st.firstRun) { st.firstRun = false; } else if (away > 24 * 3600e3) setTimeout(() => toast(t('S9'), { ms: 4200 }), 700);
+  Audio.setVolume(st.set.vol ?? 0.6); Audio.setSfx(st.set.sfx !== false);
   if (st.set.sound !== 'silent') document.addEventListener('pointerdown', () => { Audio.unlock(); Audio.ambient(st.set.sound); }, { once: true });
   save(st); Ads.init(st).then(() => Ads.banner(true, st)).then(renderHome); Billing.init(st, onPass); if (st.set.reminder) setReminder(true);
   setInterval(() => { st.lastSeen = Date.now(); }, 60000);

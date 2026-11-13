@@ -102,5 +102,8 @@
 "dailyReward": "+100 coins for finishing",
 "share": "Share",
 "shareText": "Calm Mahjong · Daily {d} ✓ · {n}-day streak. No forced ads.",
-"copied": "Copied"
+"copied": "Copied",
+"soundPiano": "Soft piano",
+"volume": "Volume",
+"sfxLabel": "Sound effects"
 }

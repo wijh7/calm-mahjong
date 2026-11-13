@@ -102,5 +102,8 @@
 "dailyReward": "+100 monedas al terminar",
 "share": "Compartir",
 "shareText": "Calm Mahjong · Diario {d} ✓ · racha de {n} días. Sin anuncios forzados.",
-"copied": "Copiado"
+"copied": "Copiado",
+"soundPiano": "Piano suave",
+"volume": "Volumen",
+"sfxLabel": "Efectos de sonido"
 }
