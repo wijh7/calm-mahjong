@@ -60,7 +60,7 @@ function renderHome() {
 // ---------- sheets / toast ----------
 let sheetClose = null;
 function openSheet({ title, body, buttons = [], onClose, dismiss = true }) {
-  const s = $('#sheet'); s.innerHTML = ''; const h = document.createElement('h2'); h.textContent = title; s.append(h);
+  const s = $('#sheet'); s.innerHTML = ''; s.classList.remove('win'); const h = document.createElement('h2'); h.textContent = title; s.append(h);
   if (body) { const p = document.createElement('p'); p.textContent = body; s.append(p); }
   const wrap = document.createElement('div'); wrap.className = 'btns'; s.append(wrap);
   buttons.forEach(b => { const e = document.createElement('button'); e.className = 'btn ' + (b.kind || ''); e.textContent = b.label; if (b.sub) { const sm = document.createElement('small'); sm.textContent = b.sub; e.append(sm); } e.onclick = () => b.fn?.(); wrap.append(e); });
@@ -212,13 +212,14 @@ function win() {
   save(st, true); live(t('win')); renderHome();
   setTimeout(() => winSheet(g, coins, s, bonusTheme), 900);
 }
+function winDecor() { const sh = $('#sheet'); sh.classList.add('win'); const row = document.createElement('div'); row.className = 'stars'; row.setAttribute('aria-hidden', 'true'); row.innerHTML = [0, 1, 2].map(i => `<svg viewBox="0 0 24 24" style="animation-delay:${i * 0.12}s"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3 6.1 20.6l1.3-6.6L2.5 9.4l6.6-.8z"/></svg>`).join(''); sh.prepend(row); }
 function winSheet(g, coins, s, bonusTheme) {
   const streakLine = s.n === 7 ? t('S8') : s.n > 1 ? t('streakDay', { n: s.n }) : '', extra = [streakLine, s.rested ? t('streakRest') : '', bonusTheme ? `${t('bonusDay7')} (${bonusTheme.theme})` : ''].filter(Boolean).join(' ');
   const done = async (c) => { st.coins += c; save(st, true); closeSheet(); await afterWin(g); };
-  if (st.pass) { openSheet({ title: t('win'), body: [extra, `+${coins * 2}`].filter(Boolean).join('  ·  '), buttons: [{ label: t('next'), kind: 'main', fn: () => done(coins * 2) }], dismiss: false }); return; }
+  if (st.pass) { openSheet({ title: t('win'), body: [extra, `+${coins * 2}`].filter(Boolean).join('  ·  '), buttons: [{ label: t('next'), kind: 'main', fn: () => done(coins * 2) }], dismiss: false }); winDecor(); return; }
   const btns = [{ label: t('takeCoins', { n: coins }), kind: 'main', fn: () => done(coins) }];
   if (Ads.rewardedAvailable(st)) btns.push({ label: t('watchCoins', { n: coins * 2 }), sub: t('optional'), fn: async () => { const r = await Ads.rewarded(st); if (r === 'earned') done(coins * 2); else if (r === 'failed-granted') { toast(t('adFail')); done(coins * 2); } else if (r === 'failed') toast(t('adLater')); } });
-  openSheet({ title: t('win'), body: [extra, t('S7')].filter(Boolean).join('\n'), buttons: btns, dismiss: false });
+  openSheet({ title: t('win'), body: [extra, t('S7')].filter(Boolean).join('\n'), buttons: btns, dismiss: false }); winDecor();
   $('#sheet p').style.whiteSpace = 'pre-line';
 }
 async function afterWin(g) {
@@ -260,7 +261,7 @@ function mapPanel(p) {
   REGIONS.forEach((r, i) => {
     const from = i * 50 + 1, open = st.themes.includes(r.id) || st.level >= from, prog = Math.max(0, Math.min(50, st.level - from + 1)), nextLocked = !open && REGIONS.slice(0, i).every(x => st.themes.includes(x.id) || st.level >= REGIONS.indexOf(x) * 50 + 1);
     const card = document.createElement('div'); card.className = 'card'; card.style.opacity = open ? 1 : .8; card.append(tileThumb(r));
-    const meta = document.createElement('div'); meta.className = 'meta'; meta.innerHTML = `<b></b><small></small>`; meta.querySelector('b').textContent = `${r.theme} · ${r.name}`; meta.querySelector('small').textContent = open ? t('perLevel', { n: prog }) : t('locked', { n: from }); card.append(meta);
+    const meta = document.createElement('div'); meta.className = 'meta'; meta.innerHTML = `<b></b><small></small>`; meta.querySelector('b').textContent = `${r.theme} · ${r.name}`; meta.querySelector('small').textContent = open ? t('perLevel', { n: prog }) : t('locked', { n: from }); if (open) { const bar = document.createElement('i'); bar.className = 'bar'; bar.setAttribute('aria-hidden', 'true'); const fill = document.createElement('u'); fill.style.width = (prog / 50 * 100) + '%'; bar.append(fill); meta.append(bar); } card.append(meta);
     if (open) { const b = document.createElement('button'); b.className = 'chip'; b.textContent = t('useTheme'); b.setAttribute('aria-pressed', st.set.theme === r.id); b.onclick = () => { st.set.theme = r.id; save(st); applyLook(); openPanel('map'); }; card.append(b); }
     else if (nextLocked) { const b = document.createElement('button'); b.className = 'btn'; b.textContent = t('unlockNow'); b.onclick = () => unlockSheet(r); card.append(b); }
     p.append(card);

@@ -2,8 +2,8 @@
 import {renderTile} from '../www/js/tiles.js'; import {LOOKS} from '../www/js/themes.js';
 const q=new URLSearchParams(location.search), mode=q.get('m')||'full', S=1024; const c=document.getElementById('c'); c.width=S; c.height=S; const x=c.getContext('2d'); const P=LOOKS.evening;
 if(mode!=='fg'){ const g=x.createLinearGradient(0,0,S,S); g.addColorStop(0,'#0f1730'); g.addColorStop(.6,'#2a3563'); g.addColorStop(1,'#4a4a7a'); x.fillStyle=g; x.fillRect(0,0,S,S);
- const r=x.createRadialGradient(S*.7,S*.25,0,S*.7,S*.25,S*.55); r.addColorStop(0,'rgba(255,191,102,.45)'); r.addColorStop(1,'rgba(255,191,102,0)'); x.fillStyle=r; x.fillRect(0,0,S,S);
- x.fillStyle='#fbf1d6'; x.beginPath(); x.arc(S*.7,S*.25,S*.07,0,7); x.fill(); }
-const tw=mode==='fg'?Math.round(S*.40):Math.round(S*.46), th=Math.round(tw*1.28); const t=renderTile('d1',tw,th,P,{}); 
+ const r=x.createRadialGradient(S*.76,S*.17,0,S*.76,S*.17,S*.5); r.addColorStop(0,'rgba(255,191,102,.45)'); r.addColorStop(1,'rgba(255,191,102,0)'); x.fillStyle=r; x.fillRect(0,0,S,S);
+ x.fillStyle='#fbf1d6'; x.beginPath(); x.arc(S*.76,S*.17,S*.05,0,7); x.fill(); }
+const tw=mode==='fg'?Math.round(S*.40):Math.round(S*.42), th=Math.round(tw*1.28); const t=renderTile('d1',tw,th,P,{}); 
 x.shadowColor='rgba(0,0,0,.35)'; x.shadowBlur=40; x.shadowOffsetY=20; x.drawImage(t,(S-tw)/2,(S-th)/2+ (mode==='fg'?0:S*.03),tw,th); document.title='ready';
 </script>

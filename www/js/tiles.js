@@ -89,6 +89,10 @@ export function renderTile(id, w, h, pal, { dim = false, selected = false, hint 
   c.lineWidth = Math.max(1, w * 0.018); c.strokeStyle = contrast ? '#000' : pal.edge; rr(c, c.lineWidth / 2, c.lineWidth / 2, fw - c.lineWidth, fh - c.lineWidth, rad); c.stroke();
   c.save(); rr(c, 0, 0, fw, fh, rad); c.clip();
   c.fillStyle = 'rgba(255,255,255,.35)'; c.fillRect(0, 0, fw, fh * 0.06);
+  // soft porcelain bevel: inner top-left light, bottom shade, glossy sweep
+  { const bw = Math.max(1.2, w * 0.028); c.lineWidth = bw; c.strokeStyle = 'rgba(255,255,255,.55)'; rr(c, bw * 1.1, bw * 1.1, fw - bw * 2.2, fh - bw * 2.2, rad * 0.8); c.stroke();
+    const sg = c.createLinearGradient(0, fh * 0.7, 0, fh); sg.addColorStop(0, 'rgba(120,90,50,0)'); sg.addColorStop(1, 'rgba(120,90,50,.16)'); c.fillStyle = sg; c.fillRect(0, fh * 0.7, fw, fh * 0.3);
+    const gl = c.createLinearGradient(0, 0, fw, fh); gl.addColorStop(0, 'rgba(255,255,255,.22)'); gl.addColorStop(0.45, 'rgba(255,255,255,0)'); c.fillStyle = gl; c.fillRect(0, 0, fw, fh); }
   if (pal.pattern) pal.pattern(c, fw, fh);
   c.restore();
   drawFace(c, id, 0, 0, fw, fh, contrast ? { ...pal, ink: '#000', red: '#b3140c', green: '#0b5f2e', blue: '#0a2f86' } : pal);

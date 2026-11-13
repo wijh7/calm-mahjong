@@ -85,3 +85,16 @@ select option{color:#000}
 #garden.off{visibility:hidden}
 .hero .btn{width:100%}.chip.lock{opacity:.75}
 .top h1{flex:1;text-align:center;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pill{padding:0 12px;flex:none}
+
+#sheet.win{background:radial-gradient(120% 70% at 50% 0%,#2f3a63 0%,#161d36 62%);box-shadow:0 -24px 70px rgba(255,191,102,.16)}
+.light #sheet.win{background:radial-gradient(120% 70% at 50% 0%,#fff3d8 0%,#f7f5ee 62%)}
+#sheet .stars{display:flex;justify-content:center;gap:10px;margin:-4px 0 10px}
+#sheet .stars svg{width:34px;height:34px;fill:#ffbf66;filter:drop-shadow(0 0 10px rgba(255,191,102,.55));animation:starpop .55s cubic-bezier(.2,1.4,.4,1) both}
+#sheet .stars svg:nth-child(2){width:42px;height:42px;margin-top:-6px}
+#sheet.win h2{text-align:center;font-size:1.4rem}
+@keyframes starpop{from{transform:scale(0) rotate(-40deg);opacity:0}to{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){#sheet .stars svg{animation:none}}
+
+.card .bar{display:block;height:6px;border-radius:6px;background:rgba(255,255,255,.12);margin-top:9px;overflow:hidden}
+.light .card .bar{background:rgba(0,0,0,.1)}
+.card .bar u{display:block;height:100%;border-radius:6px;background:linear-gradient(90deg,#ffbf66,#ffd98e);text-decoration:none}
