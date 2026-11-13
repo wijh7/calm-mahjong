@@ -40,4 +40,4 @@ Jika kebijakan ini berubah, kami akan memperbarui tanggal di atas dan, untuk per
 
 ## 11. Kontak
 Email: support.wijh7@gmail.com
-Pengembang: [NAMA PENGEMBANG / BADAN HUKUM, NEGARA — isi sebelum dipublikasikan]
+Pengembang: App Library

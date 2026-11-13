@@ -40,4 +40,4 @@ If this policy changes, we will update the date above and, for material changes,
 
 ## 11. Contact
 Email: support.wijh7@gmail.com
-Developer: [DEVELOPER NAME / LEGAL ENTITY, COUNTRY — fill in before publishing]
+Developer: App Library
