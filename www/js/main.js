@@ -209,13 +209,13 @@ function win() {
     const nr = regionFor(st.level); if (!st.themes.includes(nr.id) && st.level >= REGIONS.indexOf(nr) * 50 + 1) st.themes.push(nr.id);
     if (s.n > 0 && s.n % 7 === 0) { const nxt = REGIONS.find(r => !st.themes.includes(r.id)); if (nxt) { st.themes.push(nxt.id); bonusTheme = nxt; } }
   }
-  save(st, true); live(t('win')); renderHome();
+  st.pending = coins; save(st, true); live(t('win')); renderHome();
   setTimeout(() => winSheet(g, coins, s, bonusTheme), 900);
 }
 function winDecor() { const sh = $('#sheet'); sh.classList.add('win'); const row = document.createElement('div'); row.className = 'stars'; row.setAttribute('aria-hidden', 'true'); row.innerHTML = [0, 1, 2].map(i => `<svg viewBox="0 0 24 24" style="animation-delay:${i * 0.12}s"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3 6.1 20.6l1.3-6.6L2.5 9.4l6.6-.8z"/></svg>`).join(''); sh.prepend(row); }
 function winSheet(g, coins, s, bonusTheme) {
   const streakLine = s.n === 7 ? t('S8') : s.n > 1 ? t('streakDay', { n: s.n }) : '', extra = [streakLine, s.rested ? t('streakRest') : '', bonusTheme ? `${t('bonusDay7')} (${bonusTheme.theme})` : ''].filter(Boolean).join(' ');
-  const done = async (c) => { st.coins += c; save(st, true); closeSheet(); await afterWin(g); };
+  const done = async (c) => { st.coins += c; st.pending = 0; save(st, true); closeSheet(); await afterWin(g); };
   if (st.pass) { openSheet({ title: t('win'), body: [extra, `+${coins * 2}`].filter(Boolean).join('  ·  '), buttons: [{ label: t('next'), kind: 'main', fn: () => done(coins * 2) }], dismiss: false }); winDecor(); return; }
   const btns = [{ label: t('takeCoins', { n: coins }), kind: 'main', fn: () => done(coins) }];
   if (Ads.rewardedAvailable(st)) btns.push({ label: t('watchCoins', { n: coins * 2 }), sub: t('optional'), fn: async () => { const r = await Ads.rewarded(st); if (r === 'earned') done(coins * 2); else if (r === 'failed-granted') { toast(t('adFail')); done(coins * 2); } else if (r === 'failed') toast(t('adLater')); } });
@@ -325,7 +325,7 @@ document.addEventListener('visibilitychange', () => { if (document.hidden) { flu
 
 async function boot() {
   hydrateIcons();
-  await restoreFromMirror(st); if (!st.set.lang) st.set.lang = detect(); await setLang(st.set.lang);
+  await restoreFromMirror(st); if (st.pending > 0) { st.coins += st.pending; st.pending = 0; save(st, true); } if (!st.set.lang) st.set.lang = detect(); await setLang(st.set.lang);
   garden = new Garden($('#garden')); addEventListener('orientationchange', () => setTimeout(() => garden.resize(), 250));
   applyLook(); renderStatic(); show('home');
   const away = Date.now() - (st.lastSeen || Date.now()); st.lastSeen = Date.now();
@@ -333,6 +333,6 @@ async function boot() {
   if (st.set.sound !== 'silent') document.addEventListener('pointerdown', () => { Audio.unlock(); Audio.ambient(st.set.sound); }, { once: true });
   save(st); Ads.init(st).then(() => Ads.banner(true, st)).then(renderHome); Billing.init(st, onPass); if (st.set.reminder) setReminder(true);
   setInterval(() => { st.lastSeen = Date.now(); }, 60000);
-  if (DEBUG) window.__cm = { st, get game() { return game; }, startGame, openPanel, openSettings, t, setLang: async c => { st.set.lang = c; await setLang(c); renderStatic(); }, applyLook, win, goHome, layout, show, Ads, spriteCache };
+  if (DEBUG) window.__cm = { get L() { return L; }, st, get game() { return game; }, startGame, openPanel, openSettings, t, setLang: async c => { st.set.lang = c; await setLang(c); renderStatic(); }, applyLook, win, goHome, layout, show, Ads, spriteCache };
 }
 boot();

@@ -98,3 +98,10 @@ select option{color:#000}
 .card .bar{display:block;height:6px;border-radius:6px;background:rgba(255,255,255,.12);margin-top:9px;overflow:hidden}
 .light .card .bar{background:rgba(0,0,0,.1)}
 .card .bar u{display:block;height:100%;border-radius:6px;background:linear-gradient(90deg,#ffbf66,#ffd98e);text-decoration:none}
+@media (orientation:landscape) and (max-height:560px){
+  #game{display:grid;grid-template-columns:1fr auto;grid-template-rows:auto 1fr;padding-top:calc(var(--safeT) + 4px);padding-bottom:calc(var(--safeB) + 6px);padding-left:calc(var(--safeL,0px) + 10px);padding-right:calc(var(--safeR,0px) + 10px)}
+  #game>.top{grid-column:1/3;max-width:none;width:100%}
+  #game #boardWrap{grid-column:1;grid-row:2;margin:0}
+  #game .tools{grid-column:2;grid-row:2;flex-direction:column;justify-content:center;gap:10px;padding:0 6px}
+  #game .tools .tool,#game .tools button{min-width:84px}
+}

@@ -10,7 +10,7 @@ export const DEFAULT = () => ({
   set: { lang: '', sound: 'silent', look: 'auto', contrast: false, text: 1, haptics: true, showFree: true, motion: true, reminder: false, vol: 0.6 },
   streak: { n: 0, last: '', rest: '' }, daily: { ymd: '', done: false },
   ads: { day: '', rewarded: 0, inter: 0, lastInter: 0, since: 0, failGrants: 0, consent: '' },
-  hints: 0, stats: { done: 0, played: 0 }, game: null, rated: 0, lastSeen: 0,
+  hints: 0, stats: { done: 0, played: 0 }, game: null, pending: 0, rated: 0, lastSeen: 0,
 });
 const merge = (d, s) => { for (const k in s) d[k] = (s[k] && typeof s[k] === 'object' && !Array.isArray(s[k]) && d[k] && typeof d[k] === 'object') ? merge(d[k], s[k]) : s[k]; return d; };
 

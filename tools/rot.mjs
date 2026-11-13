@@ -1,0 +1,2 @@
+import { chromium } from '/opt/node22/lib/node_modules/playwright/index.mjs';
+const b = await chromium.launch(); const p = await (await b.newContext({ viewport: { width: 844, height: 390 }, deviceScaleFactor: 2 })).newPage(); await p.goto('http://127.0.0.1:8123/www/index.html?debug=1'); await p.waitForFunction(() => window.__cm); await p.evaluate(() => window.__cm.startGame('level', 40)); await p.waitForTimeout(700); console.log(JSON.stringify(await p.evaluate(() => window.__cm.game.metrics))); await p.screenshot({ path: '/tmp/rot2.png' }); await b.close();
