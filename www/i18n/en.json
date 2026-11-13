@@ -111,5 +111,7 @@
 "breakBody": "You have been playing a while. A small break feels nice.",
 "breakRest": "Take a break",
 "breakKeep": "Keep playing",
-"breakSetting": "Gentle break reminder"
+"breakSetting": "Gentle break reminder",
+"privacyLink": "Privacy policy",
+"feedbackLink": "Send feedback"
 }

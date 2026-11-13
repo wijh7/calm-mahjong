@@ -111,5 +111,7 @@
 "breakBody": "Du spielst schon eine Weile. Eine kleine Pause tut gut.",
 "breakRest": "Pause machen",
 "breakKeep": "Weiterspielen",
-"breakSetting": "Sanfte Pausenerinnerung"
+"breakSetting": "Sanfte Pausenerinnerung",
+"privacyLink": "Datenschutzerklärung",
+"feedbackLink": "Feedback senden"
 }

@@ -314,6 +314,7 @@ function openSettings() {
   sec(t('language')); const sel = mk('select'); LANGS.forEach(([c, n]) => { const o = mk('option'); o.value = c; o.textContent = n; o.selected = c === st.set.lang; sel.append(o); }); sel.onchange = async () => { st.set.lang = sel.value; await setLang(sel.value); save(st); renderStatic(); if (game) updateHUD(); closeSheet(); openSettings(); }; btns.before(sel);
   sec(t('secPrivacy')); const pn = mk('p', 'note'); pn.textContent = t('privacyNote'); btns.before(pn);
   if (Ads.canRequest && CAP.AdMob) { const b = mk('button', 'btn'); b.textContent = t('adChoices'); b.onclick = () => Ads.privacyOptions(); btns.before(b); }
+  [['privacyLink', 'https://wijh7.github.io/calm-mahjong/docs/privacy.html'], ['feedbackLink', 'mailto:support.wijh7@gmail.com?subject=' + encodeURIComponent('Calm Mahjong')]].forEach(([k, u]) => { const a = mk('a', 'btn quiet'); a.textContent = t(k); a.href = u; if (u.startsWith('http')) { a.target = '_blank'; a.rel = 'noopener'; } btns.before(a); });
   if (!st.pass) { const b = mk('button', 'btn quiet'); b.textContent = t('restore'); b.onclick = async () => { const ok = await Billing.restore(st, onPass); toast(ok ? t('owned') : t('adLater')); }; btns.before(b); }
 }
 function onPass(owned) { if (owned && !st.pass) { st.pass = true; st.coins += 1000; if (!st.themes.includes('washi')) st.themes.push('washi'); Ads.banner(false, st); } else if (!owned && st.pass) st.pass = false; save(st, true); renderHome(); }
