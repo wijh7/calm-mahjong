@@ -23,7 +23,7 @@ const holds = new Set();
 let have = null, mode = 'off', vol = 0.6, cur = null, old = null, curId = null, timer = null, held = false, winEl = null, lastIds = [];
 const url = id => 'music/' + id + '.ogg';
 const mk = () => { const a = new window.Audio(); a.preload = 'auto'; a.volume = 0; a._f = 0; return a; };
-const apply = a => { if (a) a.volume = Math.max(0, Math.min(1, a._f * vol * LEVEL)); };
+const apply = a => { if (a) a.volume = Math.max(0, Math.min(1, Math.sin(Math.max(0, Math.min(1, a._f)) * Math.PI / 2) * vol * LEVEL)); };
 function fade(a, to, secs, done) {
   if (!a) return; clearInterval(a._t); const from = a._f, t0 = performance.now();
   a._t = setInterval(() => { const k = Math.min(1, (performance.now() - t0) / (secs * 1000)); a._f = from + (to - from) * k; apply(a); if (k >= 1) { clearInterval(a._t); done?.(); } }, 60);

@@ -19,3 +19,6 @@ Semua lagu dipotong maksimal 170 detik, volume diratakan ke -19 LUFS, format OGG
 
 ## Bawaan
 Musik "Acak semua" menyala sejak ketukan pertama. Pemain yang mau tenang tanpa musik memilih "Calm · tanpa musik" di Pengaturan.
+
+## Loop
+Fade bawaan di awal/akhir tiap file dipotong (level < 4 dB di bawah isi lagu), lalu pemain menyambung dengan crossfade equal-power 3,5 detik. Sambungan diukur: tidak lebih sepi dari jeda alami lagu itu sendiri. Belum didengar manual.
