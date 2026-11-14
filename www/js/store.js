@@ -7,7 +7,7 @@ export const dayNum = s => { const [y, m, d] = s.split('-').map(Number); return 
 
 export const DEFAULT = () => ({
   v: VERSION, coins: 80, level: 1, items: {}, themes: ['washi'], pass: false, installYmd: ymd(), firstRun: true,
-  set: { lang: '', sound: 'silent', music: 'off', look: 'auto', contrast: false, text: 1, haptics: true, showFree: true, motion: true, reminder: false, vol: 0.6, sfx: true, breakNudge: true },
+  set: { lang: '', sound: 'silent', music: 'shuffle', look: 'auto', contrast: false, text: 1, haptics: true, showFree: true, motion: true, reminder: false, vol: 0.6, sfx: true, breakNudge: true },
   streak: { n: 0, last: '', rest: '' }, daily: { ymd: '', done: false },
   ads: { day: '', rewarded: 0, inter: 0, lastInter: 0, since: 0, failGrants: 0, consent: '' },
   hints: 0, stats: { done: 0, played: 0 }, game: null, pending: 0, rated: 0, lastSeen: 0,

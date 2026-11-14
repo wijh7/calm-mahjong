@@ -305,7 +305,7 @@ function openSettings() {
   const sec = x => { const e = mk('div', 'sec'); e.textContent = x; btns.before(e); };
   const chips = (opts, cur, set) => { const w = mk('div', 'chips'); opts.forEach(([v, label, locked]) => { const b = mk('button', 'chip'); b.textContent = locked ? label + ' ✦' : label; if (locked) b.classList.add('lock'); b.setAttribute('aria-pressed', String(v === cur)); b.onclick = () => { if (locked) { closeSheet(); openPanel('shop'); return; } set(v); [...w.children].forEach(c => c.setAttribute('aria-pressed', String(c === b))); }; w.append(b); }); btns.before(w); };
   const tog = (label, key, cb) => { const b = mk('button', 'tog'); b.setAttribute('role', 'switch'); b.setAttribute('aria-checked', String(!!st.set[key])); b.innerHTML = '<span></span><i class="sw"></i>'; b.firstChild.textContent = label; b.onclick = async () => { const v = !st.set[key]; if (cb) { const ok = await cb(v); if (ok === false) return; } st.set[key] = v; b.setAttribute('aria-checked', String(v)); save(st); applyLook(); }; btns.before(b); };
-  sec(t('music')); { const rows = []; const mark = () => rows.forEach(([b, v]) => b.setAttribute('aria-pressed', String(v === (st.set.music || 'off')))); const pickM = v => { st.set.music = v; Audio.unlock(); Music.set(v); save(st); mark(); };
+  sec(t('music')); { const rows = []; const mark = () => rows.forEach(([b, v]) => b.setAttribute('aria-pressed', String(v === (st.set.music || 'shuffle')))); const pickM = v => { st.set.music = v; Audio.unlock(); Music.set(v); save(st); mark(); };
     const w = mk('div', 'chips'); [['off', t('musicOff')], ['shuffle', t('musicShuffle')]].forEach(([v, label]) => { const b = mk('button', 'chip'); b.textContent = label; b.onclick = () => pickM(v); rows.push([b, v]); w.append(b); }); btns.before(w);
     const av = Music.available(); [['china', 'grpChina'], ['indo', 'grpIndo'], ['other', 'grpOther']].forEach(([g, key]) => { const list = av.filter(x => x.g === g); if (!list.length) return; const h = mk('div', 'grp'); h.textContent = t(key); btns.before(h); const box = mk('div', 'trks'); list.forEach(x => { const b = mk('button', 'trk'); b.innerHTML = '<b></b><small></small>'; b.firstChild.textContent = x.short || x.title; b.lastChild.textContent = x.by; b.onclick = () => pickM(x.id); rows.push([b, x.id]); box.append(b); }); btns.before(box); }); mark(); }
   sec(t('secAmbience')); chips([['silent', t('soundSilent')], ['rain', t('soundRain')], ['forest', t('soundForest'), !st.pass], ['purr', t('soundPurr'), !st.pass], ['lofi', t('soundLofi'), !st.pass]], st.set.sound, v => { st.set.sound = v; Audio.unlock(); Audio.ambient(v); save(st); });
@@ -357,8 +357,9 @@ async function boot() {
   const away = Date.now() - (st.lastSeen || Date.now()); st.lastSeen = Date.now();
   if (st.firstRun) { st.firstRun = false; } else if (away > 24 * 3600e3) setTimeout(() => toast(t('S9'), { ms: 4200 }), 700);
   if (!Number.isFinite(st.level) || st.level < 1) st.level = 1; st.level = Math.floor(st.level);
-  Audio.setVolume(st.set.vol ?? 0.6); Audio.setSfx(st.set.sfx !== false); Music.setVolume(st.set.vol ?? 0.6); if (st.set.sound === 'piano') st.set.sound = 'silent';
-  Music.init().then(() => { const m = st.set.music || 'off'; if (m !== 'off') document.addEventListener('pointerdown', () => Music.set(m), { once: true }); });
+  Audio.setVolume(st.set.vol ?? 0.6); Audio.setSfx(st.set.sfx !== false); CAP.App?.addListener?.('appStateChange', e => e.isActive ? Music.release('bg') : Music.hold('bg'));
+  Music.setVolume(st.set.vol ?? 0.6); if (st.set.sound === 'piano') st.set.sound = 'silent';
+  Music.init().then(() => { const m = st.set.music || 'shuffle'; if (m !== 'off') document.addEventListener('pointerdown', () => Music.set(m), { once: true }); });
   if (st.set.sound !== 'silent') document.addEventListener('pointerdown', () => { Audio.unlock(); Audio.ambient(st.set.sound); }, { once: true });
   save(st); Ads.init(st).then(() => Ads.banner(true, st)).then(renderHome); Billing.init(st, onPass); if (st.set.reminder) setReminder(true);
   setInterval(() => { st.lastSeen = Date.now(); }, 60000);

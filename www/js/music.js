@@ -19,6 +19,7 @@ export const TRACKS = [
 ];
 export const WIN_TRACK = { id: 'win', title: 'Chinese Ancient Style Music - Love', by: 'ET11LX', src: 'Pixabay', lic: 'Pixabay Content License' };
 const XF = 3.5, LEVEL = 0.85;
+const holds = new Set();
 let have = null, mode = 'off', vol = 0.6, cur = null, old = null, curId = null, timer = null, held = false, winEl = null, lastIds = [];
 const url = id => 'music/' + id + '.ogg';
 const mk = () => { const a = new window.Audio(); a.preload = 'auto'; a.volume = 0; a._f = 0; return a; };
@@ -65,7 +66,7 @@ export const Music = {
     w.addEventListener('ended', () => this.endWin(), { once: true }); w.play().catch(() => this.endWin());
   },
   endWin(silent) { if (!winEl) return; const w = winEl; winEl = null; try { w.pause(); } catch {} if (!silent && cur) fade(cur, 1, 1.5); else if (cur) fade(cur, 1, 0.6); },
-  hold() { held = true; cur?.pause(); old?.pause(); winEl?.pause(); },
-  release() { if (!held) return; held = false; if (mode !== 'off') { cur?.play().catch(() => {}); winEl?.play().catch(() => {}); } },
+  hold(why = 'ad') { holds.add(why); held = true; cur?.pause(); old?.pause(); winEl?.pause(); },
+  release(why = 'ad') { holds.delete(why); if (holds.size || !held) return; held = false; if (mode !== 'off') { cur?.play().catch(() => {}); winEl?.play().catch(() => {}); } },
 };
-document.addEventListener('visibilitychange', () => document.hidden ? Music.hold() : Music.release());
+document.addEventListener('visibilitychange', () => document.hidden ? Music.hold('bg') : Music.release('bg'));

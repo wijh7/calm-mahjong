@@ -5,7 +5,9 @@ const R = []; const ok = (n, c, d = '') => { R.push(c); console.log((c ? 'PASS' 
 await p.goto('http://localhost:8123/www/index.html?debug=1'); await p.waitForTimeout(1500);
 const cm = await p.evaluate(() => !!window.__cm); ok('debug hook', cm);
 const av = await p.evaluate(() => __cm.Music.available().length); ok('15 tracks available + win', av === 15 && await p.evaluate(() => __cm.Music.hasWin()), String(av));
-ok('default is off, nothing playing', await p.evaluate(() => __cm.st.set.music === 'off' && __cm.Music.current() === null));
+ok('default is shuffle, silent until first tap', await p.evaluate(() => __cm.st.set.music === 'shuffle' && __cm.Music.current() === null));
+await p.mouse.click(200, 400); await p.waitForTimeout(2500);
+ok('first tap starts shuffle music', await p.evaluate(() => __cm.Music.mode() === 'shuffle' && __cm.Music.playing()), await p.evaluate(() => String(__cm.Music.current())));
 await p.evaluate(() => __cm.openSettings()); await p.waitForTimeout(400);
 const rows = await p.$$eval('#sheet .trk', a => a.length); ok('settings lists 15 tracks in 3 groups', rows === 15 && await p.$$eval('#sheet .grp', a => a.length) === 3, String(rows));
 await p.click('#sheet .trk >> nth=0'); await p.waitForTimeout(2500);
