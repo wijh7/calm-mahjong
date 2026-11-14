@@ -17,7 +17,7 @@ const forced = new URLSearchParams(location.search).get('ads'); // ?ads=fail|ok 
 function roll(st) { const a = st.ads, d = ymd(); if (a.day !== d) { a.day = d; a.rewarded = 0; a.inter = 0; a.failGrants = 0; } return a; }
 
 export const Ads = {
-  ready: { rewarded: false, inter: false }, canRequest: false, simUI: null, bannerOn: false,
+  ready: { rewarded: false, inter: false }, canRequest: false, simUI: null, onShow: null, onHide: null, bannerOn: false,
   async init(st) {
     const A = plug(); if (!A || st.pass) { this.canRequest = !st.pass; return; }
     try {
@@ -49,11 +49,13 @@ export const Ads = {
         if (this.ready.rewarded) {
           let earned = false, h1 = await A.addListener('onRewardedVideoAdReward', () => { earned = true; });
           this.ready.rewarded = false;
+          this.onShow?.();
           const shown = A.showRewardVideoAd().catch(() => null), dog = sleep(AdPolicy.SHOW_WATCHDOG_MS).then(() => 'wd');
           const r = await Promise.race([shown, dog]); if (r && r.amount) earned = true; h1.remove?.();
           res = earned ? 'earned' : 'cancelled'; this.preload('rewarded');
         }
       } catch { res = 'failed'; }
+      this.onHide?.();
     }
     if (res === 'earned') { a.rewarded++; return 'earned'; }
     if (res === 'cancelled') return 'cancelled';
@@ -71,7 +73,7 @@ export const Ads = {
     const A = plug();
     if (!A) { if (forced === 'ok' && this.simUI) { a.since = 0; a.inter++; a.lastInter = Date.now(); await this.simUI('interstitial'); return true; } return false; }
     if (!this.ready.inter) return false;       // not loaded => skip silently, never wait
-    try { this.ready.inter = false; a.since = 0; a.inter++; a.lastInter = Date.now(); await A.showInterstitial(); this.preload('inter'); return true; } catch { return false; }
+    try { this.ready.inter = false; a.since = 0; a.inter++; a.lastInter = Date.now(); this.onShow?.(); await A.showInterstitial(); this.preload('inter'); return true; } catch { return false; } finally { this.onHide?.(); }
   },
   async banner(show, st) {
     const A = plug(); if (!A || st.pass || !this.canRequest) { if (this.bannerOn && A) A.removeBanner().catch(() => {}); this.bannerOn = false; return; }

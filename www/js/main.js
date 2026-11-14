@@ -5,6 +5,7 @@ import { renderTile } from './tiles.js';
 import { palette, REGIONS, regionFor, regionIndex, lookId, LOOKS } from './themes.js';
 import { Garden, ITEMS, drawItem } from './scene.js';
 import { Audio } from './audio.js';
+import { Music, TRACKS, WIN_TRACK } from './music.js';
 import { Ads, AdPolicy } from './ads.js';
 import { Billing } from './billing.js';
 
@@ -200,7 +201,7 @@ $('#gBack').onclick = () => goHome(); $('#gMenu').onclick = () => openSettings(t
 // ---------- winning ----------
 const WIN_COINS = 50; // S7 promises "50 coins, or watch 1 ad for 100"
 function win() {
-  game.won = true; game.celebrate = performance.now(); game.petals = Array.from({ length: 46 }, () => ({ x: Math.random(), y: 0.55 + Math.random() * 0.5, v: 0.25 + Math.random() * 0.5, p: Math.random() * 6, r: 2 + Math.random() * 3 })); requestDraw(); Audio.win(); buzz(25); const g = game; st.game = null;
+  game.won = true; game.celebrate = performance.now(); game.petals = Array.from({ length: 46 }, () => ({ x: Math.random(), y: 0.55 + Math.random() * 0.5, v: 0.25 + Math.random() * 0.5, p: Math.random() * 6, r: 2 + Math.random() * 3 })); requestDraw(); Audio.win(); Music.win(); buzz(25); const g = game; st.game = null;
   const s = touchStreak(st); st.stats.done++;
   let coins = WIN_COINS, bonusTheme = null;
   if (g.mode === 'daily') { st.daily = { ymd: g.ymd, done: true }; coins = 100; }
@@ -241,7 +242,7 @@ async function afterWin(g) {
   if (done === 6 && !st.set.reminder && !st.asked) { st.asked = 1; return openSheet({ title: t('reminder'), body: t('S4'), buttons: [{ label: t('yes'), kind: 'main', fn: async () => { closeSheet(); await setReminder(true); next(); } }, { label: t('no'), kind: 'quiet', fn: () => { closeSheet(); next(); } }] }); }
   next();
 }
-async function next() { if (await Ads.maybeInterstitial(st)) { Audio.resume(); } save(st); startGame('level', st.level); }
+async function next() { if (await Ads.maybeInterstitial(st)) { Audio.resume(); } Music.endWin(); Music.next(); save(st); startGame('level', st.level); }
 
 // ---------- navigation ----------
 function gardenOn(v, decor) { garden.decor = !!decor; $('#garden').classList.toggle('off', !v); if (v) { garden.resize(); garden.start(); } else garden.stop(); }
@@ -250,7 +251,7 @@ function show(name) {
   gardenOn(name === 'home');
   if (name === 'game') requestAnimationFrame(layout);
 }
-function goHome() { if (game && !game.won) persist(); flush(); game = null; $('#panel').classList.remove('half'); applyLook(); show('home'); renderHome(); Ads.banner(true, st).then(renderHome); }
+function goHome() { Music.endWin(); if (game && !game.won) persist(); flush(); game = null; $('#panel').classList.remove('half'); applyLook(); show('home'); renderHome(); Ads.banner(true, st).then(renderHome); }
 $('#btnPlay').onclick = () => startGame('level', st.level);
 $('#btnDaily').onclick = () => startGame('daily', st.level);
 $$('[data-go]').forEach(b => b.onclick = () => openPanel(b.dataset.go));
@@ -304,8 +305,12 @@ function openSettings() {
   const sec = x => { const e = mk('div', 'sec'); e.textContent = x; btns.before(e); };
   const chips = (opts, cur, set) => { const w = mk('div', 'chips'); opts.forEach(([v, label, locked]) => { const b = mk('button', 'chip'); b.textContent = locked ? label + ' ✦' : label; if (locked) b.classList.add('lock'); b.setAttribute('aria-pressed', String(v === cur)); b.onclick = () => { if (locked) { closeSheet(); openPanel('shop'); return; } set(v); [...w.children].forEach(c => c.setAttribute('aria-pressed', String(c === b))); }; w.append(b); }); btns.before(w); };
   const tog = (label, key, cb) => { const b = mk('button', 'tog'); b.setAttribute('role', 'switch'); b.setAttribute('aria-checked', String(!!st.set[key])); b.innerHTML = '<span></span><i class="sw"></i>'; b.firstChild.textContent = label; b.onclick = async () => { const v = !st.set[key]; if (cb) { const ok = await cb(v); if (ok === false) return; } st.set[key] = v; b.setAttribute('aria-checked', String(v)); save(st); applyLook(); }; btns.before(b); };
-  sec(t('secSound')); chips([['silent', t('soundSilent')], ['piano', t('soundPiano')], ['rain', t('soundRain')], ['forest', t('soundForest'), !st.pass], ['purr', t('soundPurr'), !st.pass], ['lofi', t('soundLofi'), !st.pass]], st.set.sound, v => { st.set.sound = v; Audio.unlock(); Audio.ambient(v); save(st); });
-  { const row = mk('div', 'volrow'); const lab = mk('label'); lab.textContent = t('volume'); const r = mk('input'); r.type = 'range'; r.min = 0; r.max = 100; r.value = Math.round((st.set.vol ?? 0.6) * 100); r.setAttribute('aria-label', t('volume')); lab.append(r); row.append(lab); r.oninput = () => { st.set.vol = r.value / 100; Audio.setVolume(st.set.vol); }; r.onchange = () => { save(st); Audio.unlock(); Audio.match(0); }; btns.before(row); }
+  sec(t('music')); { const rows = []; const mark = () => rows.forEach(([b, v]) => b.setAttribute('aria-pressed', String(v === (st.set.music || 'off')))); const pickM = v => { st.set.music = v; Audio.unlock(); Music.set(v); save(st); mark(); };
+    const w = mk('div', 'chips'); [['off', t('musicOff')], ['shuffle', t('musicShuffle')]].forEach(([v, label]) => { const b = mk('button', 'chip'); b.textContent = label; b.onclick = () => pickM(v); rows.push([b, v]); w.append(b); }); btns.before(w);
+    const av = Music.available(); [['china', 'grpChina'], ['indo', 'grpIndo'], ['other', 'grpOther']].forEach(([g, key]) => { const list = av.filter(x => x.g === g); if (!list.length) return; const h = mk('div', 'grp'); h.textContent = t(key); btns.before(h); const box = mk('div', 'trks'); list.forEach(x => { const b = mk('button', 'trk'); b.innerHTML = '<b></b><small></small>'; b.firstChild.textContent = x.short || x.title; b.lastChild.textContent = x.by; b.onclick = () => pickM(x.id); rows.push([b, x.id]); box.append(b); }); btns.before(box); }); mark(); }
+  sec(t('secAmbience')); chips([['silent', t('soundSilent')], ['rain', t('soundRain')], ['forest', t('soundForest'), !st.pass], ['purr', t('soundPurr'), !st.pass], ['lofi', t('soundLofi'), !st.pass]], st.set.sound, v => { st.set.sound = v; Audio.unlock(); Audio.ambient(v); save(st); });
+  sec(t('secSound'));
+  { const row = mk('div', 'volrow'); const lab = mk('label'); lab.textContent = t('volume'); const r = mk('input'); r.type = 'range'; r.min = 0; r.max = 100; r.value = Math.round((st.set.vol ?? 0.6) * 100); r.setAttribute('aria-label', t('volume')); lab.append(r); row.append(lab); r.oninput = () => { st.set.vol = r.value / 100; Audio.setVolume(st.set.vol); Music.setVolume(st.set.vol); }; r.onchange = () => { save(st); Audio.unlock(); Audio.match(0); }; btns.before(row); }
   tog(t('sfxLabel'), 'sfx', v => { Audio.setSfx(v); return true; });
   sec(t('secLook')); chips([['auto', t('lookAuto')], ['day', t('lookDay')], ['evening', t('lookNormal')], ['night', t('lookNight')]], st.set.look, v => { st.set.look = v; save(st); applyLook(); if (game) requestDraw(); });
   tog(t('lookContrast'), 'contrast', () => true);
@@ -315,7 +320,12 @@ function openSettings() {
   sec(t('secPrivacy')); const pn = mk('p', 'note'); pn.textContent = t('privacyNote'); btns.before(pn);
   if (Ads.canRequest && CAP.AdMob) { const b = mk('button', 'btn'); b.textContent = t('adChoices'); b.onclick = () => Ads.privacyOptions(); btns.before(b); }
   [['privacyLink', 'https://wijh7.github.io/calm-mahjong/docs/privacy.html'], ['feedbackLink', 'mailto:support.wijh7@gmail.com?subject=' + encodeURIComponent('Calm Mahjong')]].forEach(([k, u]) => { const a = mk('a', 'btn quiet'); a.textContent = t(k); a.href = u; if (u.startsWith('http')) { a.target = '_blank'; a.rel = 'noopener'; } btns.before(a); });
+  { const b = mk('button', 'btn quiet'); b.textContent = t('credits'); b.onclick = () => { closeSheet(); openCredits(); }; btns.before(b); }
   if (!st.pass) { const b = mk('button', 'btn quiet'); b.textContent = t('restore'); b.onclick = async () => { const ok = await Billing.restore(st, onPass); toast(ok ? t('owned') : t('adLater')); }; btns.before(b); }
+}
+function openCredits() {
+  const s = openSheet({ title: t('credits'), buttons: [{ label: t('close'), kind: 'quiet', fn: () => { closeSheet(); openSettings(); } }] }); const btns = s.querySelector('.btns');
+  const list = Music.available().concat(Music.hasWin() ? [WIN_TRACK] : []); list.forEach(x => { const p = document.createElement('p'); p.className = 'cred'; p.textContent = '\u201C' + x.title + '\u201D \u2014 ' + x.by + ' \u00B7 ' + x.src + ' \u00B7 ' + x.lic; btns.before(p); });
 }
 function onPass(owned) { if (owned && !st.pass) { st.pass = true; st.coins += 1000; if (!st.themes.includes('washi')) st.themes.push('washi'); Ads.banner(false, st); } else if (!owned && st.pass) st.pass = false; save(st, true); renderHome(); }
 
@@ -330,7 +340,8 @@ async function setReminder(on, interactive) {
 }
 
 // ---------- simulated ad (web preview only) ----------
-Ads.simUI = kind => new Promise(res => { const s = $('#sim'); s.hidden = false; Audio.suspend(); let done = false; const end = v => { if (done) return; done = true; s.hidden = true; Audio.resume(); res(v); }; $('#simClose').onclick = () => end(false); setTimeout(() => end(true), kind === 'rewarded' ? 1600 : 1200); });
+Ads.onShow = () => Music.hold(); Ads.onHide = () => Music.release();
+Ads.simUI = kind => new Promise(res => { const s = $('#sim'); s.hidden = false; Audio.suspend(); Music.hold(); let done = false; const end = v => { if (done) return; done = true; s.hidden = true; Audio.resume(); Music.release(); res(v); }; $('#simClose').onclick = () => end(false); setTimeout(() => end(true), kind === 'rewarded' ? 1600 : 1200); });
 
 // ---------- lifecycle ----------
 CAP.App?.addListener('backButton', () => { if (!$('#sheetWrap').hidden) return sheetClose?.(); if (current === 'panel' || current === 'game') return goHome(); CAP.App.exitApp?.(); });
@@ -346,10 +357,11 @@ async function boot() {
   const away = Date.now() - (st.lastSeen || Date.now()); st.lastSeen = Date.now();
   if (st.firstRun) { st.firstRun = false; } else if (away > 24 * 3600e3) setTimeout(() => toast(t('S9'), { ms: 4200 }), 700);
   if (!Number.isFinite(st.level) || st.level < 1) st.level = 1; st.level = Math.floor(st.level);
-  Audio.setVolume(st.set.vol ?? 0.6); Audio.setSfx(st.set.sfx !== false);
+  Audio.setVolume(st.set.vol ?? 0.6); Audio.setSfx(st.set.sfx !== false); Music.setVolume(st.set.vol ?? 0.6); if (st.set.sound === 'piano') st.set.sound = 'silent';
+  Music.init().then(() => { const m = st.set.music || 'off'; if (m !== 'off') document.addEventListener('pointerdown', () => Music.set(m), { once: true }); });
   if (st.set.sound !== 'silent') document.addEventListener('pointerdown', () => { Audio.unlock(); Audio.ambient(st.set.sound); }, { once: true });
   save(st); Ads.init(st).then(() => Ads.banner(true, st)).then(renderHome); Billing.init(st, onPass); if (st.set.reminder) setReminder(true);
   setInterval(() => { st.lastSeen = Date.now(); }, 60000);
-  if (DEBUG) window.__cm = { get L() { return L; }, st, get game() { return game; }, startGame, openPanel, openSettings, t, setLang: async c => { st.set.lang = c; await setLang(c); renderStatic(); }, applyLook, win, goHome, layout, show, Ads, spriteCache };
+  if (DEBUG) window.__cm = { get L() { return L; }, Music, st, get game() { return game; }, startGame, openPanel, openSettings, t, setLang: async c => { st.set.lang = c; await setLang(c); renderStatic(); }, applyLook, win, goHome, layout, show, Ads, spriteCache };
 }
 boot();

@@ -103,7 +103,6 @@
 "share": "I-share",
 "shareText": "Calm Mahjong · Daily {d} ✓ · {n}-araw na streak. Walang sapilitang ads.",
 "copied": "Nakopya",
-"soundPiano": "Malambing na piano",
 "volume": "Lakas ng tunog",
 "sfxLabel": "Sound effects",
 "goalLevels": "{n} level pa bago ang {name}.",
@@ -113,5 +112,13 @@
 "breakKeep": "Magpatuloy",
 "breakSetting": "Banayad na paalala ng pahinga",
 "privacyLink": "Patakaran sa privacy",
-"feedbackLink": "Magpadala ng feedback"
+"feedbackLink": "Magpadala ng feedback",
+"music": "Musika",
+"musicOff": "Naka-off",
+"musicShuffle": "I-shuffle lahat",
+"grpChina": "Tsina",
+"grpIndo": "Indonesia",
+"grpOther": "Piano, harp at iba pa",
+"credits": "Mga credit sa musika",
+"secAmbience": "Ambience"
 }

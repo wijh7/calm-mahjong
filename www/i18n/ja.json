@@ -103,7 +103,6 @@
 "share": "シェア",
 "shareText": "Calm Mahjong · デイリー {d} ✓ · {n}日連続。強制広告なし。",
 "copied": "コピーしました",
-"soundPiano": "やさしいピアノ",
 "volume": "音量",
 "sfxLabel": "効果音",
 "goalLevels": "{name}まであと{n}レベル。",
@@ -113,5 +112,13 @@
 "breakKeep": "続ける",
 "breakSetting": "やさしい休憩リマインダー",
 "privacyLink": "プライバシーポリシー",
-"feedbackLink": "フィードバックを送る"
+"feedbackLink": "フィードバックを送る",
+"music": "音楽",
+"musicOff": "オフ",
+"musicShuffle": "シャッフル",
+"grpChina": "中国",
+"grpIndo": "インドネシア",
+"grpOther": "ピアノ・ハープほか",
+"credits": "音楽クレジット",
+"secAmbience": "環境音"
 }

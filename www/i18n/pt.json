@@ -103,7 +103,6 @@
 "share": "Compartilhar",
 "shareText": "Calm Mahjong · Diário {d} ✓ · sequência de {n} dias. Sem anúncios forçados.",
 "copied": "Copiado",
-"soundPiano": "Piano suave",
 "volume": "Volume",
 "sfxLabel": "Efeitos sonoros",
 "goalLevels": "Mais {n} níveis até {name}.",
@@ -113,5 +112,13 @@
 "breakKeep": "Continuar",
 "breakSetting": "Lembrete de pausa suave",
 "privacyLink": "Política de privacidade",
-"feedbackLink": "Enviar feedback"
+"feedbackLink": "Enviar feedback",
+"music": "Música",
+"musicOff": "Desligada",
+"musicShuffle": "Aleatório",
+"grpChina": "China",
+"grpIndo": "Indonésia",
+"grpOther": "Piano, harpa e mais",
+"credits": "Créditos das músicas",
+"secAmbience": "Ambiente"
 }

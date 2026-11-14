@@ -103,7 +103,6 @@
 "share": "Paylaş",
 "shareText": "Calm Mahjong · Günlük {d} ✓ · {n} günlük seri. Zorla reklam yok.",
 "copied": "Kopyalandı",
-"soundPiano": "Yumuşak piyano",
 "volume": "Ses düzeyi",
 "sfxLabel": "Ses efektleri",
 "goalLevels": "{name} için {n} seviye kaldı.",
@@ -113,5 +112,13 @@
 "breakKeep": "Devam et",
 "breakSetting": "Nazik mola hatırlatıcısı",
 "privacyLink": "Gizlilik politikası",
-"feedbackLink": "Geri bildirim gönder"
+"feedbackLink": "Geri bildirim gönder",
+"music": "Müzik",
+"musicOff": "Kapalı",
+"musicShuffle": "Karışık çal",
+"grpChina": "Çin",
+"grpIndo": "Endonezya",
+"grpOther": "Piyano, arp ve diğerleri",
+"credits": "Müzik emeği geçenler",
+"secAmbience": "Ortam sesi"
 }

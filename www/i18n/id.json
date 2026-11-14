@@ -103,7 +103,6 @@
 "share": "Bagikan",
 "shareText": "Calm Mahjong · Harian {d} ✓ · streak {n} hari. Tanpa iklan paksa.",
 "copied": "Disalin",
-"soundPiano": "Piano lembut",
 "volume": "Volume",
 "sfxLabel": "Efek suara",
 "goalLevels": "{n} level lagi menuju {name}.",
@@ -113,5 +112,13 @@
 "breakKeep": "Lanjut main",
 "breakSetting": "Pengingat istirahat lembut",
 "privacyLink": "Kebijakan privasi",
-"feedbackLink": "Kirim masukan"
+"feedbackLink": "Kirim masukan",
+"music": "Musik",
+"musicOff": "Mati",
+"musicShuffle": "Acak semua",
+"grpChina": "Tiongkok",
+"grpIndo": "Indonesia",
+"grpOther": "Piano, harpa & lainnya",
+"credits": "Kredit musik",
+"secAmbience": "Suasana"
 }

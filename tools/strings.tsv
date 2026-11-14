@@ -103,7 +103,6 @@ dailyReward | +100 coins for finishing | +100 koin kalau selesai | +100 moedas a
 share | Share | Bagikan | Compartilhar | Compartir | Paylaş | Teilen | Partager | シェア | I-share | แชร์
 shareText | Calm Mahjong · Daily {d} ✓ · {n}-day streak. No forced ads. | Calm Mahjong · Harian {d} ✓ · streak {n} hari. Tanpa iklan paksa. | Calm Mahjong · Diário {d} ✓ · sequência de {n} dias. Sem anúncios forçados. | Calm Mahjong · Diario {d} ✓ · racha de {n} días. Sin anuncios forzados. | Calm Mahjong · Günlük {d} ✓ · {n} günlük seri. Zorla reklam yok. | Calm Mahjong · Täglich {d} ✓ · Serie: {n}. Keine erzwungene Werbung. | Calm Mahjong · Quotidien {d} ✓ · série de {n} jours. Pas de pubs forcées. | Calm Mahjong · デイリー {d} ✓ · {n}日連続。強制広告なし。 | Calm Mahjong · Daily {d} ✓ · {n}-araw na streak. Walang sapilitang ads. | Calm Mahjong · รายวัน {d} ✓ · ต่อเนื่อง {n} วัน ไม่มีโฆษณาบังคับ
 copied | Copied | Disalin | Copiado | Copiado | Kopyalandı | Kopiert | Copié | コピーしました | Nakopya | คัดลอกแล้ว
-soundPiano | Soft piano | Piano lembut | Piano suave | Piano suave | Yumuşak piyano | Sanftes Klavier | Piano doux | やさしいピアノ | Malambing na piano | เปียโนนุ่มๆ
 volume | Volume | Volume | Volume | Volumen | Ses düzeyi | Lautstärke | Volume | 音量 | Lakas ng tunog | ระดับเสียง
 sfxLabel | Sound effects | Efek suara | Efeitos sonoros | Efectos de sonido | Ses efektleri | Soundeffekte | Effets sonores | 効果音 | Sound effects | เสียงเอฟเฟกต์
 goalLevels | {n} more levels to {name}. | {n} level lagi menuju {name}. | Mais {n} níveis até {name}. | {n} niveles más hasta {name}. | {name} için {n} seviye kaldı. | Noch {n} Level bis {name}. | Encore {n} niveaux avant {name}. | {name}まであと{n}レベル。 | {n} level pa bago ang {name}. | อีก {n} ด่านถึง {name}
@@ -114,3 +113,11 @@ breakKeep | Keep playing | Lanjut main | Continuar | Seguir jugando | Devam et |
 breakSetting | Gentle break reminder | Pengingat istirahat lembut | Lembrete de pausa suave | Recordatorio de descanso suave | Nazik mola hatırlatıcısı | Sanfte Pausenerinnerung | Rappel de pause doux | やさしい休憩リマインダー | Banayad na paalala ng pahinga | เตือนให้พักเบาๆ
 privacyLink | Privacy policy | Kebijakan privasi | Política de privacidade | Política de privacidad | Gizlilik politikası | Datenschutzerklärung | Politique de confidentialité | プライバシーポリシー | Patakaran sa privacy | นโยบายความเป็นส่วนตัว
 feedbackLink | Send feedback | Kirim masukan | Enviar feedback | Enviar comentarios | Geri bildirim gönder | Feedback senden | Envoyer un avis | フィードバックを送る | Magpadala ng feedback | ส่งความคิดเห็น
+music | Music | Musik | Música | Música | Müzik | Musik | Musique | 音楽 | Musika | เพลง
+musicOff | Off | Mati | Desligada | Apagada | Kapalı | Aus | Désactivée | オフ | Naka-off | ปิด
+musicShuffle | Shuffle all | Acak semua | Aleatório | Aleatorio | Karışık çal | Zufällig | Aléatoire | シャッフル | I-shuffle lahat | สุ่มทั้งหมด
+grpChina | China | Tiongkok | China | China | Çin | China | Chine | 中国 | Tsina | จีน
+grpIndo | Indonesia | Indonesia | Indonésia | Indonesia | Endonezya | Indonesien | Indonésie | インドネシア | Indonesia | อินโดนีเซีย
+grpOther | Piano, harp & more | Piano, harpa & lainnya | Piano, harpa e mais | Piano, arpa y más | Piyano, arp ve diğerleri | Klavier, Harfe & mehr | Piano, harpe et plus | ピアノ・ハープほか | Piano, harp at iba pa | เปียโน ฮาร์ป และอื่นๆ
+credits | Music credits | Kredit musik | Créditos das músicas | Créditos de música | Müzik emeği geçenler | Musiknachweise | Crédits musicaux | 音楽クレジット | Mga credit sa musika | เครดิตเพลง
+secAmbience | Ambience | Suasana | Ambiente | Ambiente | Ortam sesi | Atmosphäre | Ambiance | 環境音 | Ambience | เสียงบรรยากาศ

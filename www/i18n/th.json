@@ -103,7 +103,6 @@
 "share": "แชร์",
 "shareText": "Calm Mahjong · รายวัน {d} ✓ · ต่อเนื่อง {n} วัน ไม่มีโฆษณาบังคับ",
 "copied": "คัดลอกแล้ว",
-"soundPiano": "เปียโนนุ่มๆ",
 "volume": "ระดับเสียง",
 "sfxLabel": "เสียงเอฟเฟกต์",
 "goalLevels": "อีก {n} ด่านถึง {name}",
@@ -113,5 +112,13 @@
 "breakKeep": "เล่นต่อ",
 "breakSetting": "เตือนให้พักเบาๆ",
 "privacyLink": "นโยบายความเป็นส่วนตัว",
-"feedbackLink": "ส่งความคิดเห็น"
+"feedbackLink": "ส่งความคิดเห็น",
+"music": "เพลง",
+"musicOff": "ปิด",
+"musicShuffle": "สุ่มทั้งหมด",
+"grpChina": "จีน",
+"grpIndo": "อินโดนีเซีย",
+"grpOther": "เปียโน ฮาร์ป และอื่นๆ",
+"credits": "เครดิตเพลง",
+"secAmbience": "เสียงบรรยากาศ"
 }

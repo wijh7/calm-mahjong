@@ -103,7 +103,6 @@
 "share": "Partager",
 "shareText": "Calm Mahjong · Quotidien {d} ✓ · série de {n} jours. Pas de pubs forcées.",
 "copied": "Copié",
-"soundPiano": "Piano doux",
 "volume": "Volume",
 "sfxLabel": "Effets sonores",
 "goalLevels": "Encore {n} niveaux avant {name}.",
@@ -113,5 +112,13 @@
 "breakKeep": "Continuer",
 "breakSetting": "Rappel de pause doux",
 "privacyLink": "Politique de confidentialité",
-"feedbackLink": "Envoyer un avis"
+"feedbackLink": "Envoyer un avis",
+"music": "Musique",
+"musicOff": "Désactivée",
+"musicShuffle": "Aléatoire",
+"grpChina": "Chine",
+"grpIndo": "Indonésie",
+"grpOther": "Piano, harpe et plus",
+"credits": "Crédits musicaux",
+"secAmbience": "Ambiance"
 }

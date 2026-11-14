@@ -103,7 +103,6 @@
 "share": "Teilen",
 "shareText": "Calm Mahjong · Täglich {d} ✓ · Serie: {n}. Keine erzwungene Werbung.",
 "copied": "Kopiert",
-"soundPiano": "Sanftes Klavier",
 "volume": "Lautstärke",
 "sfxLabel": "Soundeffekte",
 "goalLevels": "Noch {n} Level bis {name}.",
@@ -113,5 +112,13 @@
 "breakKeep": "Weiterspielen",
 "breakSetting": "Sanfte Pausenerinnerung",
 "privacyLink": "Datenschutzerklärung",
-"feedbackLink": "Feedback senden"
+"feedbackLink": "Feedback senden",
+"music": "Musik",
+"musicOff": "Aus",
+"musicShuffle": "Zufällig",
+"grpChina": "China",
+"grpIndo": "Indonesien",
+"grpOther": "Klavier, Harfe & mehr",
+"credits": "Musiknachweise",
+"secAmbience": "Atmosphäre"
 }
